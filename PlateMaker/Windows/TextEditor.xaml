@@ -1,0 +1,76 @@
+﻿<Window x:Class="PlateMaker.Windows.TextEditor"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PlateMaker"
+        xmlns:windows="clr-namespace:PlateMaker.Windows"
+        mc:Ignorable="d"
+        Title="TextEditor" Height="450" Width="800"
+        Closed="TextEditor_OnClosed">
+    <Window.Resources>
+        <Style TargetType="Button" x:Key="TextEditButton">
+            <Setter Property="Width" Value="30"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Background" Value="LightBlue"/>
+            <Setter Property="Foreground" Value="DarkBlue"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0">
+                <StackPanel Orientation="Horizontal">
+                    <Button Content="B" Command="{x:Static windows:TextEditor.BoldCommand}" Style="{StaticResource TextEditButton}"/>
+                    <Button Content="I" Command="{x:Static windows:TextEditor.ItalicCommand}" Style="{StaticResource TextEditButton}"/>
+                    <ComboBox x:Name="fontFamilyComboBox" Width="120" Margin="5" SelectionChanged="ComboBox_SelectionChanged">
+                        <ComboBoxItem Name="DefaultFont">Arial</ComboBoxItem>
+                        <ComboBoxItem>Times New Roman</ComboBoxItem>
+                        <ComboBoxItem>Courier New</ComboBoxItem>
+                    </ComboBox>
+                    <ComboBox x:Name="fontSizeComboBox" Width="60" Margin="5" SelectionChanged="ComboBox_SelectionChanged">
+                        <ComboBoxItem>16</ComboBoxItem>
+                        <ComboBoxItem>20</ComboBoxItem>
+                        <ComboBoxItem>24</ComboBoxItem>
+                        <ComboBoxItem Name="DefaultSize">30</ComboBoxItem>
+                        <ComboBoxItem>32</ComboBoxItem>
+                        <ComboBoxItem>36</ComboBoxItem>
+                        <ComboBoxItem>42</ComboBoxItem>
+                        <ComboBoxItem>54</ComboBoxItem>
+                        <ComboBoxItem>72</ComboBoxItem>
+                    </ComboBox>
+                </StackPanel>
+            </Grid>
+
+            <Grid Grid.Column="1" HorizontalAlignment="Right">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Name="ButtonSave" Content="Zapisz" Background="LightBlue" Foreground="DarkBlue" FontSize="15" Margin="5" Padding="2" Click="ButtonSave_OnClick"/>
+                    <Button Name="ButtonCancel" Content="Anuluj" Background="LightBlue" Foreground="DarkBlue" FontSize="15" Margin="5" Padding="2" Click="ButtonCancel_OnClick"/>
+                </StackPanel>
+                
+            </Grid>
+        </Grid>
+        
+        <Grid Grid.Row="1">
+            <RichTextBox x:Name="richText" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                <RichTextBox.Resources>
+                    <Style TargetType="{x:Type Paragraph}">
+                        <Setter Property="Margin" Value="0"/>
+                    </Style>
+                </RichTextBox.Resources>
+            </RichTextBox>
+        </Grid>
+        
+    </Grid>
+</Window>
