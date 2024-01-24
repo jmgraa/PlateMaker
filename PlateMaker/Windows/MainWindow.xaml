@@ -41,7 +41,7 @@
             </Canvas>
         </Grid>
 
-        <Grid Grid.Column="1">
+        <Grid Grid.Column="1" Background="MintCream">
             <StackPanel Orientation="Vertical" VerticalAlignment="Top" Margin="0, 10, 0, 0">
                 <Button Name="ButtonNumber" Content="Numer pokoju" Style="{StaticResource MenuButton}" Click="ButtonClicked"/>
                 <Button Name="ButtonMembers" Content="Osoby w pokoju" Style="{StaticResource MenuButton}" Click="ButtonClicked"/>

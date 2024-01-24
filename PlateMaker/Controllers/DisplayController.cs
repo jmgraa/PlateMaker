@@ -108,5 +108,44 @@ namespace PlateMaker.Controllers
 			window.MainRichTextCanvas.Document.Blocks.Clear();
 			window.NumberRichTextCanvas.Document.Blocks.Clear();
 		}
+
+		public bool CorrectValuesInTextField()
+		{
+			var canvasWidth = (int)_mainCanvas.ActualWidth;
+			var canvasHeight = (int)_mainCanvas.ActualHeight;
+
+			if (int.TryParse(_textBoxHeight.Text, out var textBoxHeight) &&
+			    int.TryParse(_textBoxWidth.Text, out var textBoxWidth) &&
+			    int.TryParse(_textBoxX.Text, out var textBoxY) &&
+			    int.TryParse(_textBoxY.Text, out var textBoxX))
+			{
+				if (textBoxHeight < 0 || textBoxHeight > canvasHeight ||
+				    textBoxWidth < 0 || textBoxWidth > canvasWidth ||
+				    textBoxX < 0 || textBoxX > canvasWidth ||
+				    textBoxY < 0 || textBoxY > canvasHeight)
+				{
+					MessageBox.Show($"Wartości w polach muszą byc dodatnie oraz dla wartości X oraz szerokości mniejsze od: {canvasWidth} oraz dla wartości Y oraz wysokości mniejsze od: {canvasHeight}", "Błąd", MessageBoxButton.OK, MessageBoxImage.Information);
+					return false;
+				}
+
+				if (textBoxHeight + textBoxY > canvasHeight)
+				{
+					MessageBox.Show($"Wartości sumy pol X oraz szerokości musi byc mniejsza od: {canvasWidth}", "Błąd", MessageBoxButton.OK, MessageBoxImage.Information);
+					return false;
+				}
+
+				if (textBoxWidth + textBoxX > canvasWidth)
+				{
+					MessageBox.Show($"Wartości sumy pol Y oraz wysokości musi byc mniejsza od: {canvasHeight}", "Błąd", MessageBoxButton.OK, MessageBoxImage.Information);
+					return false;
+				}
+
+				MessageBox.Show("Wartości poprawne", "Sukces", MessageBoxButton.OK, MessageBoxImage.Information);
+				return true;
+			}
+
+			MessageBox.Show("Wartości w polach mogą być tylko liczbami", "Błąd", MessageBoxButton.OK, MessageBoxImage.Information);
+			return false;
+		}
 	}
 }

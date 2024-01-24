@@ -66,7 +66,7 @@ namespace PlateMaker.Windows
 			        _fileController.ChooseLogoFile(sender, e);
 			        break;
 				case "ButtonSet":
-					// TODO DATA CLEAR
+					if (!_displayController.CorrectValuesInTextField()) break;
 			        SelectedObject.SetSize(int.Parse(TextBoxWidth.Text), int.Parse(TextBoxHeight.Text));
 			        SelectedObject.SetPosition(int.Parse(TextBoxX.Text), int.Parse(TextBoxY.Text));
 			        UpdateLayout();
