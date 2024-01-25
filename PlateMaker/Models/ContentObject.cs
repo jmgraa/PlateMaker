@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using PlateMaker.Interfaces;
 
 namespace PlateMaker.Models
 {

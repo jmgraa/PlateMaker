@@ -1,4 +1,4 @@
-﻿namespace PlateMaker
+﻿namespace PlateMaker.Interfaces
 {
     public interface IContentObject
     {

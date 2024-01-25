@@ -1,7 +1,8 @@
-﻿using Microsoft.Win32;
-using PlateMaker.Models;
+﻿using System.IO;
 using System.Windows;
 using System.Windows.Media.Imaging;
+using Microsoft.Win32;
+using PlateMaker.Models;
 using PlateMaker.Windows;
 
 namespace PlateMaker.Controllers
@@ -26,6 +27,28 @@ namespace PlateMaker.Controllers
 			if (openFileDialog.ShowDialog() != true) return;
 
 			DoorTag.Logo.Img.Source = new BitmapImage(new Uri(openFileDialog.FileName));
+		}
+
+		public static string ChooseDoorTagJson(object sender, RoutedEventArgs e)
+		{
+			var openFileDialog = new OpenFileDialog
+			{
+				Filter = "Pliki json (*.json)|*.json"
+			};
+
+			return openFileDialog.ShowDialog() != true ? "" : File.ReadAllText(openFileDialog.FileName);
+		}
+
+		public static void SaveDoorTagJson(string content)
+		{
+			var saveFileDialog = new SaveFileDialog
+			{
+				Filter = "Pliki json (*.json)|*.json"
+			};
+
+			if (saveFileDialog.ShowDialog() != true) return;
+
+			File.WriteAllText(saveFileDialog.FileName, content);
 		}
 	}
 }

@@ -6,17 +6,10 @@
         xmlns:models="clr-namespace:PlateMaker.Models"
         d:DataContext="{d:DesignInstance Type=models:LogoObject}"
         mc:Ignorable="d"
-        Title="MainWindow" Height="1000" Width="1000"
+        Title="Plate Maker" Height="1000" Width="1000"
         PreviewMouseWheel="Window_PreviewMouseWheel">
 
     <Window.Resources>
-        <Style TargetType="TextBox" x:Key="DetailsTextBox">
-            <Setter Property="FontSize" Value="20"/>
-            <Setter Property="Margin" Value="10"/>
-            <Setter Property="Padding" Value="10"/>
-            <Setter Property="TextAlignment" Value="Center"/>
-        </Style>
-
         <Style TargetType="Button" x:Key="MenuButton">
             <Setter Property="Background" Value="LightBlue"/>
             <Setter Property="Foreground" Value="DarkBlue"/>
@@ -34,7 +27,7 @@
         </Grid.ColumnDefinitions>
 
         <Grid Grid.Column="0" Margin="10" Background="LightGray">
-            <Canvas Name="mainCanvas" Width="620" Height="877" Background="LightGray">
+            <Canvas Name="MainCanvas" Width="620" Height="877" Background="LightGray">
                 <Image Name="ImageLogo" Source="{Binding DoorTag.Logo.Img.Source}" Width="{Binding DoorTag.Logo.Width}" Height="{Binding DoorTag.Logo.Height}" Stretch="Fill" Canvas.Left="{Binding DoorTag.Logo.XPosition}" Canvas.Top="{Binding DoorTag.Logo.YPosition}"/>
                 <RichTextBox x:Name="NumberRichTextCanvas" VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Disabled" Width="{Binding DoorTag.RoomNumber.Width}" Height="{Binding DoorTag.RoomNumber.Height}" Canvas.Left="{Binding DoorTag.RoomNumber.XPosition}" Canvas.Top="{Binding DoorTag.RoomNumber.YPosition}" Background="Transparent" IsReadOnly="True" BorderBrush="Transparent"/>
                 <RichTextBox x:Name="MainRichTextCanvas" VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Disabled" Width="{Binding DoorTag.RoomMembers.Width}" Height="{Binding DoorTag.RoomMembers.Height}" Canvas.Left="{Binding DoorTag.RoomMembers.XPosition}" Canvas.Top="{Binding DoorTag.RoomMembers.YPosition}" Background="Transparent" IsReadOnly="True" BorderBrush="Transparent"/>
@@ -58,17 +51,17 @@
                 <StackPanel Orientation="Horizontal" Margin="0, 5, 0, 0">
                     <Label Content="Rozmiar" FontWeight="Black"/>
                     <Label Content="Wysokość"/>
-                    <TextBox Name="TextBoxHeight" Text="300" VerticalContentAlignment="Center"/>
+                    <TextBox Name="TextBoxHeight" Text="{Binding SelectedObject.Height, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center"/>
                     <Label Content="Szerokość"/>
-                    <TextBox Name="TextBoxWidth" Text="500" VerticalContentAlignment="Center"/>
+                    <TextBox Name="TextBoxWidth" Text="{Binding SelectedObject.Width, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center"/>
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal" Margin="0, 0, 0, 5">
                     <Label Content="Pozycja" FontWeight="Black"/>
                     <Label Content="X"/>
-                    <TextBox Name="TextBoxX" Text="{Binding selectedObject.PositionX, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center"/>
+                    <TextBox Name="TextBoxX" Text="{Binding SelectedObject.PositionX, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center"/>
                     <Label Content="Y"/>
-                    <TextBox Name="TextBoxY" Text="500" VerticalContentAlignment="Center"/>
+                    <TextBox Name="TextBoxY" Text="{Binding SelectedObject.PositionY, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center"/>
                 </StackPanel>
                 <Button Name="ButtonSet" Content="Ustaw" Style="{StaticResource MenuButton}" Padding="0" Click="ButtonClicked"/>
             </StackPanel>
@@ -82,10 +75,10 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <Grid Grid.Column="0">
-                        <Button Name="ButtonSave" Content="Zapisz" Style="{StaticResource MenuButton}"/>
+                        <Button Name="ButtonSave" Content="Zapisz" Style="{StaticResource MenuButton}" Click="ButtonClicked"/>
                     </Grid>
                     <Grid Grid.Column="1">
-                        <Button Content="Wczytaj" Style="{StaticResource MenuButton}"/>
+                        <Button Name="ButtonLoad" Content="Wczytaj" Style="{StaticResource MenuButton}" Click="ButtonClicked"/>
                     </Grid>
                 </Grid>
 

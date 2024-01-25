@@ -10,8 +10,7 @@ namespace PlateMaker.Services
     {
         public static void DecodeAndSetRtfText(string withRtf, RichTextBox richTextBox)
         {
-            if (withRtf == "")
-                return;
+            if (withRtf == "") return;
 
             var textPointer = richTextBox.Document.ContentStart;
             using var ms = new MemoryStream(Encoding.Default.GetBytes(withRtf));
@@ -23,7 +22,6 @@ namespace PlateMaker.Services
         public static void EncodeAndSetString(out string withRtf, RichTextBox richTextBox)
         {
             var textRange = new TextRange(richTextBox.Document.ContentStart, richTextBox.Document.ContentEnd);
-
             using var ms = new MemoryStream();
 
             textRange.Save(ms, DataFormats.Rtf);

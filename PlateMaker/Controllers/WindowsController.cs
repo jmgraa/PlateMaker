@@ -1,5 +1,5 @@
-﻿using PlateMaker.Interfaces;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
+using PlateMaker.Interfaces;
 using PlateMaker.Windows;
 
 namespace PlateMaker.Controllers

@@ -26,12 +26,12 @@ namespace PlateMaker.Windows
             _withRtf = withRtf;
             _mainRichTextBox = mainRichTextBox;
 
-            fontFamilyComboBox.SelectedItem = DefaultFont;
-            fontSizeComboBox.SelectedItem = DefaultSize;
+            FontFamilyComboBox.SelectedItem = DefaultFont;
+            FontSizeComboBox.SelectedItem = DefaultSize;
 
             _insideText = _withRtf.RtfString;
 
-            RtfEncoder.DecodeAndSetRtfText(_insideText, richText);
+            RtfEncoder.DecodeAndSetRtfText(_insideText, RichText);
         }
 
         private void InitializeCommands()
@@ -42,21 +42,21 @@ namespace PlateMaker.Windows
 
         private void BoldExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            if (richText.Selection.GetPropertyValue(TextElement.FontWeightProperty) is FontWeight fontWeight 
-                && fontWeight == FontWeights.Bold) richText.Selection.ApplyPropertyValue(TextElement.FontWeightProperty, FontWeights.Normal);
-            else richText.Selection.ApplyPropertyValue(TextElement.FontWeightProperty, FontWeights.Bold);
+            if (RichText.Selection.GetPropertyValue(TextElement.FontWeightProperty) is FontWeight fontWeight 
+                && fontWeight == FontWeights.Bold) RichText.Selection.ApplyPropertyValue(TextElement.FontWeightProperty, FontWeights.Normal);
+            else RichText.Selection.ApplyPropertyValue(TextElement.FontWeightProperty, FontWeights.Bold);
         }
 
         private void ItalicExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            if (richText.Selection.GetPropertyValue(TextElement.FontStyleProperty) is FontStyle fontStyle
-                && fontStyle == FontStyles.Italic) richText.Selection.ApplyPropertyValue(TextElement.FontStyleProperty, FontStyles.Normal);
-            else richText.Selection.ApplyPropertyValue(TextElement.FontStyleProperty, FontStyles.Italic);
+            if (RichText.Selection.GetPropertyValue(TextElement.FontStyleProperty) is FontStyle fontStyle
+                && fontStyle == FontStyles.Italic) RichText.Selection.ApplyPropertyValue(TextElement.FontStyleProperty, FontStyles.Normal);
+            else RichText.Selection.ApplyPropertyValue(TextElement.FontStyleProperty, FontStyles.Italic);
         }
 
         private void ButtonSave_OnClick(object sender, RoutedEventArgs e)
         {
-	        RtfEncoder.EncodeAndSetString(out _insideText, richText);
+	        RtfEncoder.EncodeAndSetString(out _insideText, RichText);
 	        _withRtf.RtfString = _insideText;
 	        Close();
         }
@@ -79,9 +79,9 @@ namespace PlateMaker.Windows
 
 	    private void ApplyFontSettings()
 	    {
-		    var selectedFontFamily = (fontFamilyComboBox.SelectedItem as ComboBoxItem)!.Content.ToString();
+		    var selectedFontFamily = (FontFamilyComboBox.SelectedItem as ComboBoxItem)!.Content.ToString();
 
-		    if (!double.TryParse((fontSizeComboBox.SelectedItem as ComboBoxItem)?.Content.ToString(),
+		    if (!double.TryParse((FontSizeComboBox.SelectedItem as ComboBoxItem)?.Content.ToString(),
 			        out var selectedFontSize)) return;
 
 		    ChangeFontFamily(new FontFamily(selectedFontFamily!));
@@ -90,14 +90,14 @@ namespace PlateMaker.Windows
 
 	    private void ChangeFontSize(double newSize)
 	    {
-		    if (richText.Selection.IsEmpty) richText.FontSize = newSize;
-		    else richText.Selection.ApplyPropertyValue(TextElement.FontSizeProperty, newSize);
+		    if (RichText.Selection.IsEmpty) RichText.FontSize = newSize;
+		    else RichText.Selection.ApplyPropertyValue(TextElement.FontSizeProperty, newSize);
 	    }
 
 	    private void ChangeFontFamily(FontFamily newFontFamily)
 	    {
-		    if (richText.Selection.IsEmpty) richText.FontFamily = newFontFamily;
-		    else richText.Selection.ApplyPropertyValue(TextElement.FontFamilyProperty, newFontFamily);
+		    if (RichText.Selection.IsEmpty) RichText.FontFamily = newFontFamily;
+		    else RichText.Selection.ApplyPropertyValue(TextElement.FontFamilyProperty, newFontFamily);
 	    }
     }
 }

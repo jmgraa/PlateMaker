@@ -1,4 +1,5 @@
-﻿using PlateMaker.Controllers;
+﻿using Newtonsoft.Json;
+using PlateMaker.Controllers;
 using PlateMaker.Models;
 using PlateMaker.Services;
 using System.ComponentModel;
@@ -55,8 +56,7 @@ namespace PlateMaker.Windows
 
         private void ButtonClicked(object sender, RoutedEventArgs e)
         {
-	        if (sender is not Button button)
-		        return;
+	        if (sender is not Button button) return;
 
 	        var buttonName = button.Name;
 
@@ -65,27 +65,54 @@ namespace PlateMaker.Windows
 		        case "ButtonChooseLogo":
 			        _fileController.ChooseLogoFile(sender, e);
 			        break;
+
 				case "ButtonSet":
-					if (!_displayController.CorrectValuesInTextField()) break;
+					if (!_displayController.ValidData()) break;
 			        SelectedObject.SetSize(int.Parse(TextBoxWidth.Text), int.Parse(TextBoxHeight.Text));
 			        SelectedObject.SetPosition(int.Parse(TextBoxX.Text), int.Parse(TextBoxY.Text));
 			        UpdateLayout();
 					break;
+
 				case "ButtonNumber":
 			        WindowsController.ShowTextEditor(DoorTag!.RoomNumber, NumberRichTextCanvas);
 			        break;
+
 				case "ButtonMembers":
 			        WindowsController.ShowTextEditor(DoorTag!.RoomMembers, MainRichTextCanvas);
 			        break;
+
 				case "ButtonPrint":
-			        PrintManager.Print(mainCanvas);
+			        PrintManager.Print(MainCanvas);
 			        break;
+
 				case "ButtonCreateTag":
 			        if (!_displayController.CreateNewTag()) return;
 			        _displayController.ResetCanvas();
 			        DoorTag = new DoorTag();
 			        UpdateControllers();
 			        MessageBox.Show("Utworzono nową tabliczkę!", "Sukces", MessageBoxButton.OK, MessageBoxImage.Information);
+			        break;
+
+		        case "ButtonSave":
+			        var doorTagToSerialize = new DoorTagSerializer(DoorTag);
+			        var content = doorTagToSerialize.Serialize();
+					FileController.SaveDoorTagJson(content);
+			        break;
+
+		        case "ButtonLoad":
+			        var jsonContent = FileController.ChooseDoorTagJson(sender, e);
+			        if (jsonContent == "") break;
+			        var doorTagDeserialized = JsonConvert.DeserializeObject<DoorTagSerializer>(jsonContent);
+			        DoorTag = new DoorTag
+			        {
+				        RoomNumber = doorTagDeserialized.RoomNumber,
+				        RoomMembers = doorTagDeserialized.RoomMembers
+			        };
+			        if (doorTagDeserialized.Logo != null)
+			        {
+				        DoorTag.Logo = new LogoObject(doorTagDeserialized.Logo.Width, doorTagDeserialized.Logo.Height, doorTagDeserialized.Logo.XPosition, doorTagDeserialized.Logo.YPosition, doorTagDeserialized.Logo.ImageSource);
+			        }
+			        UpdateControllers();
 			        break;
 	        }
         }
@@ -106,6 +133,10 @@ namespace PlateMaker.Windows
 
 			// TODO FIX THIS - PROPERTY CALL
 			DoorTag = DoorTag;
+
+			MainRichTextCanvas.Document.Blocks.Clear();
+			RtfEncoder.DecodeAndSetRtfText(DoorTag.RoomNumber.Number, NumberRichTextCanvas);
+			RtfEncoder.DecodeAndSetRtfText(DoorTag.RoomMembers.Members, MainRichTextCanvas);
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

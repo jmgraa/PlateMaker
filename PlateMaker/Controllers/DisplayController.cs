@@ -1,8 +1,8 @@
 ﻿using System.Windows;
-using PlateMaker.Models;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using PlateMaker.Models;
 using PlateMaker.Windows;
 
 namespace PlateMaker.Controllers
@@ -12,7 +12,7 @@ namespace PlateMaker.Controllers
 		public DoorTag? DoorTag = window.DoorTag;
 		// TODO FIX NO NEED TO PASS WINDOW
 		private MainWindow _window = window;
-		private readonly Canvas _mainCanvas = window.mainCanvas;
+		private readonly Canvas _mainCanvas = window.MainCanvas;
 		private readonly TextBox _textBoxWidth = window.TextBoxWidth;
 		private readonly TextBox _textBoxHeight = window.TextBoxHeight;
 		private readonly TextBox _textBoxX = window.TextBoxX;
@@ -109,42 +109,23 @@ namespace PlateMaker.Controllers
 			window.NumberRichTextCanvas.Document.Blocks.Clear();
 		}
 
-		public bool CorrectValuesInTextField()
+		public bool ValidData()
 		{
 			var canvasWidth = (int)_mainCanvas.ActualWidth;
 			var canvasHeight = (int)_mainCanvas.ActualHeight;
 
-			if (int.TryParse(_textBoxHeight.Text, out var textBoxHeight) &&
-			    int.TryParse(_textBoxWidth.Text, out var textBoxWidth) &&
-			    int.TryParse(_textBoxX.Text, out var textBoxY) &&
-			    int.TryParse(_textBoxY.Text, out var textBoxX))
+			if (int.TryParse(_textBoxHeight.Text, out var height)
+			    && int.TryParse(_textBoxWidth.Text, out var width)
+				&& int.TryParse(_textBoxX.Text, out var sizeY)
+				&& int.TryParse(_textBoxY.Text, out var sizeX))
 			{
-				if (textBoxHeight < 0 || textBoxHeight > canvasHeight ||
-				    textBoxWidth < 0 || textBoxWidth > canvasWidth ||
-				    textBoxX < 0 || textBoxX > canvasWidth ||
-				    textBoxY < 0 || textBoxY > canvasHeight)
-				{
-					MessageBox.Show($"Wartości w polach muszą byc dodatnie oraz dla wartości X oraz szerokości mniejsze od: {canvasWidth} oraz dla wartości Y oraz wysokości mniejsze od: {canvasHeight}", "Błąd", MessageBoxButton.OK, MessageBoxImage.Information);
-					return false;
-				}
-
-				if (textBoxHeight + textBoxY > canvasHeight)
-				{
-					MessageBox.Show($"Wartości sumy pol X oraz szerokości musi byc mniejsza od: {canvasWidth}", "Błąd", MessageBoxButton.OK, MessageBoxImage.Information);
-					return false;
-				}
-
-				if (textBoxWidth + textBoxX > canvasWidth)
-				{
-					MessageBox.Show($"Wartości sumy pol Y oraz wysokości musi byc mniejsza od: {canvasHeight}", "Błąd", MessageBoxButton.OK, MessageBoxImage.Information);
-					return false;
-				}
-
-				MessageBox.Show("Wartości poprawne", "Sukces", MessageBoxButton.OK, MessageBoxImage.Information);
-				return true;
+				var possible = (height >= 0 && width >= 0 && sizeY >= 0 && sizeX >= 0) && ((sizeX + width) <= canvasWidth && (sizeY + height) <= canvasHeight);
+				if (!possible)  MessageBox.Show("Niewłaściwe wartości w polach!\nObiekt znajdzie się w całości poza polem roboczym", "Błąd", 
+					MessageBoxButton.OK, MessageBoxImage.Error);
+				return possible;
 			}
 
-			MessageBox.Show("Wartości w polach mogą być tylko liczbami", "Błąd", MessageBoxButton.OK, MessageBoxImage.Information);
+			MessageBox.Show("Niepoprawne wartości!", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
 			return false;
 		}
 	}
